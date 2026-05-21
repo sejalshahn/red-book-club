@@ -3,515 +3,425 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📖 Red Book Summer Club</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<title>Red Book Summer Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --yellow: #FFD93D; --purple: #7B5EA7; --purple-light: #EDE8F5; --purple-mid: #C4B0E0;
-    --coral: #FF6B6B; --bg: #FFFBF0; --card: #FFFFFF; --text: #2D2D2D; --text-soft: #6B6B6B;
-    --border: rgba(0,0,0,0.08); --radius: 16px; --radius-sm: 10px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Nunito Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-  h1, h2, h3 { font-family: 'Nunito', sans-serif; }
-  .app-header { background: var(--purple); color: white; text-align: center; padding: 1.5rem 1rem 2.5rem; position: relative; overflow: hidden; }
-  .app-header::after { content: ''; position: absolute; bottom: -20px; left: 0; right: 0; height: 40px; background: var(--bg); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
-  .app-header h1 { font-size: 1.8rem; font-weight: 900; }
-  .app-header p { font-size: 0.85rem; opacity: 0.75; margin-top: 4px; }
-  .stars-deco { font-size: 1.2rem; letter-spacing: 6px; margin-bottom: 6px; opacity: 0.6; }
-  .main { max-width: 600px; margin: 0 auto; padding: 1rem 1rem 4rem; }
-  .section-title { font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-soft); margin: 1.5rem 0 0.6rem; }
-  .card { background: var(--card); border-radius: var(--radius); border: 1.5px solid var(--border); padding: 1rem 1.1rem; margin-bottom: 0.6rem; position: relative; }
-  .card.popped { animation: pop 0.4s ease; }
-  @keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
-  .kid-card { display: flex; align-items: flex-start; gap: 10px; }
-  .kid-emo { font-size: 2rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
-  .kid-info { flex: 1; min-width: 0; }
-  .kid-name-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .kid-name { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800; }
-  .finish-badge { font-family: 'Nunito', sans-serif; font-size: 0.7rem; font-weight: 700; background: var(--yellow); color: #5a4000; border-radius: 99px; padding: 2px 8px; }
-  .kid-page-text { font-size: 0.8rem; color: var(--text-soft); margin-top: 2px; }
-  .pbar-bg { height: 8px; background: rgba(0,0,0,0.07); border-radius: 99px; overflow: hidden; margin-top: 7px; }
-  .pbar-fill { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
-  .pct-label { font-size: 0.72rem; color: var(--text-soft); margin-top: 3px; }
-  .stickers-received { font-size: 0.85rem; margin-top: 5px; }
-  .rank-badge { position: absolute; top: 10px; right: 12px; font-size: 1.3rem; }
-  .update-inline { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .update-inline label { font-size: 0.82rem; color: var(--text-soft); }
-  .num-input { width: 64px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 10px; padding: 6px 8px; font-family: inherit; background: #fffbf0; color: #2d2d2d; outline: none; font-size: 0.9rem; }
-  .join-box { background: white; border-radius: var(--radius); border: 2px dashed var(--purple-mid); padding: 1.2rem; text-align: center; margin-bottom: 1rem; }
-  .join-box h2 { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
-  .join-box p { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 1rem; }
-  .emoji-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 1rem; }
-  .epbtn { font-size: 1.4rem; background: none; border: 2px solid transparent; border-radius: 10px; padding: 3px 5px; cursor: pointer; }
-  .epbtn.sel { border-color: var(--purple); background: var(--purple-light); }
-  .field-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; align-items: center; }
-  .text-input { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 0.9rem; font-family: 'Nunito Sans', sans-serif; outline: none; background: var(--bg); color: var(--text); width: 140px; }
-  .pin-hint { font-size: 0.75rem; color: var(--text-soft); margin-top: 6px; }
-  .pin-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
-  .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--purple-mid); background: transparent; transition: background 0.15s; }
-  .pin-dot.filled { background: var(--purple); border-color: var(--purple); }
-  .numpad { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; max-width: 200px; margin: 0 auto 10px; }
-  .numpad-btn { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 700; background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px; cursor: pointer; color: var(--text); }
-  .numpad-btn:active { background: var(--purple-light); }
-  .btn { font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; padding: 9px 18px; border-radius: 99px; border: none; cursor: pointer; white-space: nowrap; }
-  .btn-primary { background: var(--purple); color: white; }
-  .btn-yellow { background: var(--yellow); color: #5a4000; }
-  .btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--text-soft); }
-  .btn-sm { font-size: 0.78rem; padding: 6px 13px; }
-  .sticker-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
-  .sbtn { font-size: 1.3rem; background: var(--bg); border: 2px solid transparent; border-radius: 8px; padding: 3px 6px; cursor: pointer; }
-  .sbtn.sel { border-color: var(--purple); background: var(--purple-light); }
-  .feed-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; color: var(--text-soft); padding: 8px 0; border-bottom: 1px solid var(--border); }
-  .feed-item:last-child { border-bottom: none; }
-  .feed-emo { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
-  .feed-item strong { color: var(--text); font-weight: 700; }
-  .feed-time { margin-left: auto; flex-shrink: 0; font-size: 0.72rem; padding-left: 8px; }
-  .my-select { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 7px 10px; font-family: 'Nunito Sans', sans-serif; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; }
-  #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--purple); color: white; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem; padding: 8px 20px; border-radius: 99px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 999; white-space: nowrap; }
-  #toast.show { opacity: 1; }
-  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(40,20,60,0.45); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
-  .modal-bg.open { display: flex; }
-  .modal { background: white; border-radius: var(--radius); padding: 1.5rem; max-width: 300px; width: 100%; text-align: center; }
-  .modal h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
-  .modal p { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 1rem; }
-  .error-msg { color: var(--coral); font-size: 0.8rem; margin-top: 6px; font-weight: 600; min-height: 1.2em; }
-  .loading { text-align: center; padding: 3rem 1rem; color: var(--text-soft); }
-  .spinner { font-size: 2rem; animation: spin 1s linear infinite; display: block; margin-bottom: 8px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .empty { text-align: center; padding: 2rem 1rem; color: var(--text-soft); }
-  .err-banner { background: #fee; border: 1px solid #fcc; color: #900; padding: 10px 14px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 10px; }
+:root {
+  --purple: #7B5EA7; --purple-light: #EDE8F5; --purple-mid: #C4B0E0;
+  --yellow: #FFD93D; --coral: #FF6B6B; --bg: #FFFBF0;
+  --text: #2D2D2D; --soft: #6B6B6B; --border: rgba(0,0,0,0.09);
+  --r: 16px; --rs: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito Sans', sans-serif; background: var(--bg); color: var(--text); }
+h1,h2,h3,button { font-family: 'Nunito', sans-serif; }
+.hdr { background: var(--purple); color: #fff; text-align: center; padding: 1.4rem 1rem 2.4rem; position: relative; }
+.hdr::after { content:''; position:absolute; bottom:-18px; left:0; right:0; height:36px; background:var(--bg); border-radius:50% 50% 0 0/100% 100% 0 0; }
+.hdr h1 { font-size:1.7rem; font-weight:900; }
+.hdr p { font-size:.83rem; opacity:.72; margin-top:3px; }
+.stars { font-size:1.1rem; letter-spacing:6px; opacity:.55; margin-bottom:5px; }
+.wrap { max-width:580px; margin:0 auto; padding:1rem 1rem 4rem; }
+.sec { font-family:'Nunito',sans-serif; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--soft); margin:1.4rem 0 .55rem; }
+.card { background:#fff; border-radius:var(--r); border:1.5px solid var(--border); padding:.95rem 1.05rem; margin-bottom:.55rem; position:relative; }
+.card.pop { animation:pop .4s ease; }
+@keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+/* join box */
+.jbox { background:#fff; border-radius:var(--r); border:2px dashed var(--purple-mid); padding:1.15rem; text-align:center; margin-bottom:1rem; }
+.jbox h2 { font-size:.97rem; font-weight:800; margin-bottom:3px; }
+.jbox p { font-size:.8rem; color:var(--soft); margin-bottom:.9rem; }
+.erow { display:flex; flex-wrap:wrap; gap:5px; justify-content:center; margin-bottom:.9rem; }
+.ebtn { font-size:1.35rem; background:none; border:2px solid transparent; border-radius:9px; padding:2px 4px; cursor:pointer; }
+.ebtn.on { border-color:var(--purple); background:var(--purple-light); }
+.frow { display:flex; gap:7px; flex-wrap:wrap; justify-content:center; align-items:center; }
+input.ti { border:1.5px solid var(--border); border-radius:var(--rs); padding:7px 11px; font-size:.88rem; font-family:'Nunito Sans',sans-serif; outline:none; background:var(--bg); color:var(--text); width:138px; }
+input.ti:focus { border-color:var(--purple); }
+.hint { font-size:.73rem; color:var(--soft); margin-top:5px; }
+/* kid card */
+.krow { display:flex; align-items:flex-start; gap:9px; }
+.kemo { font-size:1.9rem; flex-shrink:0; line-height:1; margin-top:1px; }
+.kinf { flex:1; min-width:0; }
+.kname { font-size:.97rem; font-weight:800; }
+.fbadge { font-size:.68rem; font-weight:700; background:var(--yellow); color:#5a4000; border-radius:99px; padding:2px 7px; margin-left:4px; }
+.ksub { font-size:.78rem; color:var(--soft); margin-top:1px; }
+
+.stks { font-size:.83rem; margin-top:4px; }
+.rank { position:absolute; top:9px; right:11px; font-size:1.25rem; }
+.upd { margin-top:9px; padding-top:9px; border-top:1px solid var(--border); display:flex; gap:7px; align-items:center; flex-wrap:wrap; }
+.upd label { font-size:.8rem; color:var(--soft); }
+input.ni { width:62px; border:1.5px solid rgba(0,0,0,.1); border-radius:9px; padding:5px 7px; font-family:inherit; background:#fffbf0; color:#2d2d2d; outline:none; font-size:.87rem; }
+/* sticker */
+.srow { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:7px; }
+.sbtn { font-size:1.25rem; background:var(--bg); border:2px solid transparent; border-radius:7px; padding:2px 5px; cursor:pointer; }
+.sbtn.on { border-color:var(--purple); background:var(--purple-light); }
+select { border:1.5px solid var(--border); border-radius:var(--rs); padding:6px 9px; font-family:'Nunito Sans',sans-serif; font-size:.83rem; background:var(--bg); color:var(--text); outline:none; }
+/* feed */
+.fi { display:flex; align-items:flex-start; gap:7px; font-size:.8rem; color:var(--soft); padding:7px 0; border-bottom:1px solid var(--border); }
+.fi:last-child { border-bottom:none; }
+.fi strong { color:var(--text); font-weight:700; }
+.ft { margin-left:auto; font-size:.7rem; flex-shrink:0; padding-left:6px; }
+/* buttons */
+.btn { font-family:'Nunito',sans-serif; font-size:.82rem; font-weight:800; padding:8px 17px; border-radius:99px; border:none; cursor:pointer; white-space:nowrap; }
+.btn:active { transform:scale(.96); }
+.bp { background:var(--purple); color:#fff; }
+.by { background:var(--yellow); color:#5a4000; }
+.bg { background:transparent; border:1.5px solid var(--border); color:var(--soft); font-family:'Nunito',sans-serif; font-size:.78rem; font-weight:700; padding:5px 12px; border-radius:99px; cursor:pointer; }
+.sm { font-size:.76rem; padding:5px 12px; }
+/* pin modal */
+.mbg { display:none; position:fixed; inset:0; background:rgba(40,20,60,.45); z-index:100; align-items:center; justify-content:center; padding:1rem; }
+.mbg.open { display:flex; }
+.modal { background:#fff; border-radius:var(--r); padding:1.4rem; max-width:290px; width:100%; text-align:center; }
+.modal h2 { font-size:1.05rem; font-weight:800; margin-bottom:5px; }
+.modal p { font-size:.8rem; color:var(--soft); margin-bottom:.9rem; }
+.dots { display:flex; gap:5px; justify-content:center; margin-bottom:9px; }
+.dot { width:13px; height:13px; border-radius:50%; border:2px solid var(--purple-mid); background:transparent; transition:background .15s; }
+.dot.on { background:var(--purple); border-color:var(--purple); }
+.np { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; max-width:190px; margin:0 auto 9px; }
+.nk { font-family:'Nunito',sans-serif; font-size:1.05rem; font-weight:700; background:#fff; border:1.5px solid var(--border); border-radius:9px; padding:9px; cursor:pointer; color:var(--text); }
+.nk:active { background:var(--purple-light); }
+.perr { color:var(--coral); font-size:.78rem; margin-top:5px; font-weight:600; min-height:1.1em; }
+/* toast */
+#toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:var(--purple); color:#fff; font-family:'Nunito',sans-serif; font-weight:700; font-size:.83rem; padding:7px 18px; border-radius:99px; opacity:0; pointer-events:none; transition:opacity .3s; z-index:999; white-space:nowrap; }
+#toast.on { opacity:1; }
+.empty { text-align:center; padding:1.8rem 1rem; color:var(--soft); }
+.live { font-size:.7rem; color:var(--soft); margin-bottom:.4rem; }
 </style>
 </head>
 <body>
 
-<div class="app-header">
-  <div class="stars-deco">★ ★ ★</div>
+<div class="hdr">
+  <div class="stars">★ ★ ★</div>
   <h1>📖 Red Book Summer Club</h1>
   <p>Primary Phonics Workbook 1 · 46 pages</p>
 </div>
 
-<div class="main">
-  <div id="joinSection">
-    <div class="join-box">
-      <h2>Add your reader! 📚</h2>
-      <p>Pick an emoji, type your child's name, then create a 4-digit PIN</p>
-      <div class="emoji-row" id="emojiRow"></div>
-      <div class="field-row">
-        <input type="text" id="joinName" class="text-input" placeholder="Child's name" maxlength="20" />
-        <button class="btn btn-primary btn-sm" id="joinBtn">Join ✓</button>
-      </div>
-      <div class="pin-hint">You'll create a PIN on the next step</div>
+<div class="wrap">
+  <!-- JOIN FORM — static, never re-rendered -->
+  <div class="jbox">
+    <h2>Add your reader! 📚</h2>
+    <p>Pick an emoji, type your child's name, then create a 4-digit PIN</p>
+    <div class="erow" id="erow"></div>
+    <div class="frow">
+      <input type="text" id="joinName" class="ti" placeholder="Child's name" maxlength="20" />
+      <button class="btn bp sm" id="joinBtn">Join ✓</button>
     </div>
+    <div class="hint">You'll create a PIN on the next step</div>
   </div>
-  <div id="main">
-    <div class="loading"><span class="spinner">📖</span>Loading the club…</div>
-  </div>
+
+  <!-- DYNAMIC CONTENT — re-rendered on each update -->
+  <div id="board"></div>
 </div>
 
 <div id="toast"></div>
 
-<div class="modal-bg" id="pinModal">
+<!-- PIN MODAL — static -->
+<div class="mbg" id="pinModal">
   <div class="modal">
-    <h2 id="pinTitle">Enter PIN</h2>
-    <p id="pinSubtitle">Enter your 4-digit PIN</p>
-    <div class="pin-dots">
-      <div class="pin-dot" id="d0"></div>
-      <div class="pin-dot" id="d1"></div>
-      <div class="pin-dot" id="d2"></div>
-      <div class="pin-dot" id="d3"></div>
+    <h2 id="ptitle">Enter PIN</h2>
+    <p id="psub">Enter your 4-digit PIN</p>
+    <div class="dots">
+      <div class="dot" id="d0"></div><div class="dot" id="d1"></div>
+      <div class="dot" id="d2"></div><div class="dot" id="d3"></div>
     </div>
-    <div class="numpad" id="numpad"></div>
-    <div class="error-msg" id="pinError"></div>
+    <div class="np" id="np"></div>
+    <div class="perr" id="perr"></div>
     <br>
-    <button class="btn btn-ghost btn-sm" id="cancelPinBtn">Cancel</button>
+    <button class="bg" id="cancelPin">Cancel</button>
   </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-// ---- Firebase init ----
-var firebaseConfig = {
+firebase.initializeApp({
   apiKey: "AIzaSyAzICXHNfqhqBanVi1sapzNS0reryXheF8",
   authDomain: "red-book-club.firebaseapp.com",
   projectId: "red-book-club",
   storageBucket: "red-book-club.firebasestorage.app",
   messagingSenderId: "966866422735",
   appId: "1:966866422735:web:9fb764e2591378082ee0ba"
-};
-firebase.initializeApp(firebaseConfig);
+});
 var db = firebase.firestore();
 
-// ---- Constants ----
 var TOTAL = 46;
 var EMOJIS = ["🦋","🦁","🌸","🚀","🌈","🐢","🦊","🐸","⚡","🌻","🦄","🐙","🦀","🐝","🌙","🎸","🍎","🦖"];
 var STICKERS = ["⭐","🎉","🔥","💪","🌟","❤️","👏","🎈","🍀","🐝"];
-var COLORS = ["#7B5EA7","#4ECDC4","#FF6B6B","#6BCB77","#FFD93D","#F7A072","#A8DADC","#E8A0BF","#90BE6D","#43AA8B","#577590","#F9844A","#4D908E","#277DA1","#F3722C","#F8961E","#F9C74F","#90BE6D"];
+var COLORS = ["#7B5EA7","#4ECDC4","#FF6B6B","#6BCB77","#FFD93D","#F7A072","#A8DADC","#E8A0BF","#90BE6D","#43AA8B","#577590","#F9844A","#4D908E","#277DA1","#F3722C","#F8961E","#F9C74F","#3B6D11"];
 
-// ---- State ----
 var kids = [];
 var feedItems = [];
-var selectedEmoji = EMOJIS[0];
-var selectedSticker = STICKERS[0];
-var pinBuffer = "";
-var pinCallback = null;
+var selEmoji = EMOJIS[0];
+var selSticker = STICKERS[0];
+
+// PIN state
+var pinBuf = "";
+var pinCb = null;
 var pinMode = "verify";
 var pinStep = 1;
 var pinFirst = "";
 
-// ---- Helpers ----
-function timeAgo(ts) {
+// ---- Toast ----
+function toast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  setTimeout(function(){ t.classList.remove("on"); }, 2800);
+}
+
+// ---- Time ----
+function ago(ts) {
   if (!ts) return "";
-  var ms = (typeof ts === "object" && ts.toMillis) ? ts.toMillis() : ts;
-  var s = Math.floor((Date.now() - ms) / 1000);
+  var s = Math.floor((Date.now() - ts) / 1000);
   if (s < 5) return "just now";
   if (s < 60) return s + "s ago";
   if (s < 3600) return Math.floor(s/60) + "m ago";
-  if (s < 86400) return Math.floor(s/3600) + "h ago";
-  return Math.floor(s/86400) + "d ago";
+  return Math.floor(s/3600) + "h ago";
 }
 
-function showToast(msg) {
-  var t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(function(){ t.classList.remove("show"); }, 3000);
+function sid(name) { return name.toLowerCase().replace(/[^a-z0-9]/g,"_"); }
+
+// ---- PIN ----
+function pdots() {
+  for (var i=0;i<4;i++) document.getElementById("d"+i).classList.toggle("on", i < pinBuf.length);
 }
 
-function showError(msg) {
-  var main = document.getElementById("main");
-  var banner = document.createElement("div");
-  banner.className = "err-banner";
-  banner.textContent = "⚠️ " + msg;
-  main.insertBefore(banner, main.firstChild);
-  setTimeout(function(){ if (banner.parentNode) banner.parentNode.removeChild(banner); }, 6000);
-}
-
-function popCard(name) {
-  var safe = name.replace(/[^a-zA-Z0-9]/g, "_");
-  var el = document.getElementById("kc_" + safe);
-  if (el) { el.classList.add("popped"); setTimeout(function(){ el.classList.remove("popped"); }, 500); }
-}
-
-function safeid(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, "_");
-}
-
-// ---- PIN modal ----
-function buildNumpad() {
-  var np = document.getElementById("numpad");
-  np.innerHTML = "";
-  var keys = [1,2,3,4,5,6,7,8,9,"",0,"⌫"];
-  keys.forEach(function(v) {
-    var b = document.createElement("button");
-    b.className = "numpad-btn";
-    b.textContent = v === "" ? "" : String(v);
-    if (v === "") { b.disabled = true; b.style.visibility = "hidden"; }
-    else {
-      b.addEventListener("click", function() {
-        if (v === "⌫") {
-          pinBuffer = pinBuffer.slice(0, -1);
-        } else if (typeof v === "number" && pinBuffer.length < 4) {
-          pinBuffer += String(v);
-        }
-        updatePinDots();
-        if (pinBuffer.length === 4) {
-          setTimeout(submitPin, 200);
-        }
-      });
-    }
-    np.appendChild(b);
-  });
-  document.getElementById("cancelPinBtn").addEventListener("click", closePin);
-}
-
-function updatePinDots() {
-  for (var i = 0; i < 4; i++) {
-    document.getElementById("d" + i).classList.toggle("filled", i < pinBuffer.length);
-  }
-}
-
-function openPin(mode, callback, kidName) {
-  pinMode = mode;
-  pinCallback = callback;
-  pinBuffer = "";
-  pinStep = 1;
-  pinFirst = "";
-  document.getElementById("pinError").textContent = "";
-  if (mode === "set") {
-    document.getElementById("pinTitle").textContent = "Create a PIN for " + kidName;
-    document.getElementById("pinSubtitle").textContent = "Pick any 4 numbers — this protects " + kidName + "'s page";
-  } else {
-    document.getElementById("pinTitle").textContent = kidName + "'s PIN";
-    document.getElementById("pinSubtitle").textContent = "Enter the 4-digit PIN to save changes";
-  }
-  updatePinDots();
+function openPin(mode, cb, name) {
+  pinMode = mode; pinCb = cb; pinBuf = ""; pinStep = 1; pinFirst = "";
+  document.getElementById("perr").textContent = "";
+  document.getElementById("ptitle").textContent = mode === "set" ? "Create a PIN for " + name : name + "'s PIN";
+  document.getElementById("psub").textContent = mode === "set" ? "Pick any 4 numbers" : "Enter the 4-digit PIN";
+  pdots();
   document.getElementById("pinModal").classList.add("open");
 }
 
 function closePin() {
   document.getElementById("pinModal").classList.remove("open");
-  pinBuffer = "";
-  pinCallback = null;
-  updatePinDots();
+  pinBuf = ""; pinCb = null; pdots();
 }
 
-function submitPin() {
+function pinKey(v) {
+  if (v === "del") { pinBuf = pinBuf.slice(0,-1); pdots(); return; }
+  if (pinBuf.length >= 4) return;
+  pinBuf += String(v);
+  pdots();
+  if (pinBuf.length === 4) setTimeout(pinSubmit, 200);
+}
+
+function pinSubmit() {
   if (pinMode === "set") {
     if (pinStep === 1) {
-      pinFirst = pinBuffer;
-      pinBuffer = "";
-      document.getElementById("pinSubtitle").textContent = "Enter it again to confirm";
-      document.getElementById("pinError").textContent = "";
-      updatePinDots();
-      pinStep = 2;
+      pinFirst = pinBuf; pinBuf = ""; pinStep = 2;
+      document.getElementById("psub").textContent = "Enter it again to confirm";
+      document.getElementById("perr").textContent = "";
+      pdots();
     } else {
-      if (pinBuffer === pinFirst) {
-        var pin = pinBuffer;
-        closePin();
-        if (pinCallback) pinCallback(pin);
+      if (pinBuf === pinFirst) {
+        var p = pinBuf; closePin(); if (pinCb) pinCb(p);
       } else {
-        document.getElementById("pinError").textContent = "PINs didn't match — try again";
-        pinBuffer = "";
-        pinFirst = "";
-        pinStep = 1;
-        document.getElementById("pinSubtitle").textContent = "Pick any 4 numbers";
-        updatePinDots();
+        document.getElementById("perr").textContent = "Didn't match — try again";
+        pinBuf = ""; pinFirst = ""; pinStep = 1;
+        document.getElementById("psub").textContent = "Pick any 4 numbers";
+        pdots();
       }
     }
   } else {
-    var pin = pinBuffer;
-    closePin();
-    if (pinCallback) pinCallback(pin);
+    var p = pinBuf; closePin(); if (pinCb) pinCb(p);
   }
 }
 
-// ---- Firestore actions ----
+// Build numpad
+(function(){
+  var np = document.getElementById("np");
+  [1,2,3,4,5,6,7,8,9,"",0,"⌫"].forEach(function(v){
+    var b = document.createElement("button");
+    b.className = "nk";
+    if (v === "") { b.disabled = true; b.style.visibility = "hidden"; }
+    else {
+      b.textContent = String(v);
+      b.addEventListener("click", function(){ pinKey(v === "⌫" ? "del" : v); });
+    }
+    np.appendChild(b);
+  });
+  document.getElementById("cancelPin").addEventListener("click", closePin);
+})();
+
+// ---- Firestore ----
 function joinKid(name, emoji, pin) {
-  var clean = name.trim().slice(0, 20);
-  showToast("Adding " + clean + "...");
-  var ref = db.collection("kids").doc(safeid(clean));
+  var clean = name.trim().slice(0,20);
   var color = COLORS[kids.length % COLORS.length];
-  ref.set({
-    name: clean,
-    emoji: emoji,
-    page: 0,
-    stickers: [],
-    color: color,
-    pin: pin,
+  toast("Adding " + clean + "...");
+  db.collection("kids").doc(sid(clean)).set({
+    name: clean, emoji: emoji, page: 0,
+    stickers: [], color: color, pin: pin,
     joinedAt: firebase.firestore.FieldValue.serverTimestamp()
-  })
-    .then(function() {
-      return addFeedItem("🎉", "<strong>" + clean + "</strong> joined the Red Book Summer Club!");
-    })
-    .then(function() {
-      showToast("Welcome, " + clean + "! 🎉");
-    })
-    .catch(function(err) {
-      showError("Could not add kid: " + err.message);
+  }).then(function(){
+    addFeed("🎉", "<strong>"+clean+"</strong> joined the Red Book Summer Club!");
+    toast("Welcome, " + clean + "! 🎉");
+    document.getElementById("joinName").value = "";
+  }).catch(function(e){ toast("Error: " + e.message); });
+}
+
+function updatePage(name, page, pin) {
+  db.collection("kids").doc(sid(name)).get().then(function(snap){
+    if (!snap.exists) { toast("Kid not found"); return; }
+    if (snap.data().pin !== pin) { toast("Wrong PIN ❌"); return; }
+    db.collection("kids").doc(sid(name)).update({page: page}).then(function(){
+      addFeed("📖", "<strong>"+name+"</strong> is on page "+page+" of "+TOTAL+"!");
+      if (page >= TOTAL) addFeed("🏆","<strong>"+name+"</strong> FINISHED THE WHOLE BOOK! 🎊");
+      toast("Saved! 🌟");
+      var el = document.getElementById("k_"+sid(name));
+      if (el) { el.classList.add("pop"); setTimeout(function(){ el.classList.remove("pop"); },500); }
     });
+  }).catch(function(e){ toast("Error: "+e.message); });
 }
 
-function updatePage(kidName, page, pin) {
-  var ref = db.collection("kids").doc(safeid(kidName));
-  ref.get()
-    .then(function(snap) {
-      if (!snap.exists) { showError("Kid not found"); return; }
-      if (snap.data().pin !== pin) { showToast("Wrong PIN — try again ❌"); return; }
-      return ref.update({ page: page })
-        .then(function() {
-          addFeedItem("📖", "<strong>" + kidName + "</strong> is now on page " + page + " of " + TOTAL + "!");
-          if (page >= TOTAL) addFeedItem("🏆", "<strong>" + kidName + "</strong> FINISHED THE WHOLE BOOK! 🎊🎊🎊");
-          showToast("Page saved! 🌟");
-          popCard(kidName);
-        });
-    })
-    .catch(function(err) { showError("Could not update page: " + err.message); });
+function sendSticker(to, sticker) {
+  db.collection("kids").doc(sid(to)).update({
+    stickers: firebase.firestore.FieldValue.arrayUnion(sticker)
+  }).then(function(){
+    addFeed(sticker, "Someone sent "+sticker+" to <strong>"+to+"</strong>!");
+    toast("Sent! "+sticker);
+  }).catch(function(e){ toast("Error: "+e.message); });
 }
 
-function sendSticker(toName, sticker) {
-  var ref = db.collection("kids").doc(safeid(toName));
-  ref.update({ stickers: firebase.firestore.FieldValue.arrayUnion(sticker) })
-    .then(function() {
-      addFeedItem(sticker, "Someone sent " + sticker + " to <strong>" + toName + "</strong>!");
-      showToast("Sticker sent! " + sticker);
-      popCard(toName);
-    })
-    .catch(function(err) { showError("Could not send sticker: " + err.message); });
-}
-
-function addFeedItem(emo, html) {
-  var feedRef = db.collection("feed").doc("main");
-  return feedRef.get().then(function(snap) {
-    var existing = snap.exists ? (snap.data().items || []) : [];
-    var updated = [{ emo: emo, html: html, ts: Date.now() }].concat(existing).slice(0, 50);
-    return feedRef.set({ items: updated });
+function addFeed(emo, html) {
+  var ref = db.collection("feed").doc("main");
+  ref.get().then(function(snap){
+    var list = snap.exists ? (snap.data().items||[]) : [];
+    list = [{emo:emo,html:html,ts:Date.now()}].concat(list).slice(0,50);
+    ref.set({items:list});
   });
 }
 
-// ---- Render ----
-function render() {
-  var main = document.getElementById("main");
-  if (!main) return;
-  var sorted = kids.filter(function(k){ return k.name; }).slice().sort(function(a, b) { return b.page - a.page; });
-  var html = '<div style="font-size:0.72rem;color:#6B6B6B;margin-bottom:0.5rem">🔴 Live</div>';
+// ---- Render board only ----
+function renderBoard() {
+  var el = document.getElementById("board");
+  if (!el) return;
+  var sorted = kids.filter(function(k){ return k && k.name; }).sort(function(a,b){ return b.page-a.page; });
+  var h = '<div class="live">🔴 Live</div>';
 
-  // Kid cards
   if (sorted.length > 0) {
-    html += '<div class="section-title">The readers · ' + sorted.length + ' kid' + (sorted.length !== 1 ? 's' : '') + '</div>';
-    sorted.forEach(function(k, idx) {
-      var pct = Math.round((k.page / TOTAL) * 100);
-      var rank = k.page > 0 ? (idx===0?"🥇":idx===1?"🥈":idx===2?"🥉":"") : "";
-      var recentStickers = (k.stickers || []).slice(-8).join(" ");
-      var finished = k.page >= TOTAL;
-      var safe = k.name.replace(/[^a-zA-Z0-9]/g, "_");
-      html += '<div class="card" id="kc_' + safe + '">';
-      if (rank) html += '<div class="rank-badge">' + rank + '</div>';
-      html += '<div class="kid-card">';
-      html += '<div class="kid-emo">' + k.emoji + '</div>';
-      html += '<div class="kid-info">';
-      html += '<div class="kid-name-row"><span class="kid-name">' + k.name + '</span>';
-      if (finished) html += '<span class="finish-badge">🏆 Finished!</span>';
-      html += '</div>';
-      html += '<div class="kid-page-text">' + (k.page === 0 ? "Not started yet" : "Page " + k.page + " of " + TOTAL) + '</div>';
-      html += '<div class="pbar-bg"><div class="pbar-fill" style="width:' + pct + '%;background:' + k.color + '"></div></div>';
-      html += '<div class="pct-label">' + pct + '% done</div>';
-      if (recentStickers) html += '<div class="stickers-received">' + recentStickers + '</div>';
-      html += '</div></div>';
-      html += '<div class="update-inline">';
-      html += '<label>Update page:</label>';
-      html += '<input type="number" class="num-input" id="pg_' + safe + '" min="1" max="' + TOTAL + '" value="' + (k.page || 1) + '" />';
-      html += '<button class="btn btn-primary btn-sm update-btn" data-name="' + k.name.replace(/"/g, '&quot;') + '">Save 🔑</button>';
-      html += '</div></div>';
+    h += '<div class="sec">The readers · '+sorted.length+' kid'+(sorted.length!==1?'s':'')+'</div>';
+    sorted.forEach(function(k, i){
+      var pct = Math.round(k.page/TOTAL*100);
+      var rank = k.page>0?(i===0?"🥇":i===1?"🥈":i===2?"🥉":""):"";
+      var stks = (k.stickers||[]).slice(-8).join(" ");
+      var done = k.page >= TOTAL;
+      var id = sid(k.name);
+      h += '<div class="card" id="k_'+id+'">';
+      if (rank) h += '<div class="rank">'+rank+'</div>';
+      h += '<div class="krow"><div class="kemo">'+k.emoji+'</div><div class="kinf">';
+      h += '<span class="kname">'+k.name+'</span>';
+      if (done) h += '<span class="fbadge">🏆 Finished!</span>';
+      h += '<div class="ksub">'+(k.page===0?"Not started yet":"Page "+k.page+" of "+TOTAL)+'</div>';
+
+      if (stks) h += '<div class="stks">'+stks+'</div>';
+      h += '</div></div>';
+      h += '<div class="upd"><label>Update page:</label>';
+      h += '<input type="number" class="ni" id="pg_'+id+'" min="1" max="'+TOTAL+'" value="'+(k.page||1)+'" />';
+      h += '<button class="btn bp sm" data-kid="'+k.name.replace(/"/g,'&quot;')+'">Save 🔑</button>';
+      h += '</div></div>';
     });
   } else {
-    html += '<div class="empty"><div style="font-size:3rem;margin-bottom:8px">📖</div><p>No readers yet — be the first to join!</p></div>';
+    h += '<div class="empty"><div style="font-size:2.5rem;margin-bottom:6px">📖</div><p>No readers yet — be the first!</p></div>';
   }
 
-  // Sticker sender
   if (sorted.length > 0) {
-    html += '<div class="section-title" style="margin-top:1.2rem">Send a sticker</div>';
-    html += '<div class="card">';
-    html += '<div style="font-size:0.82rem;color:var(--text-soft);margin-bottom:6px;">Pick one:</div>';
-    html += '<div class="sticker-row">';
-    STICKERS.forEach(function(s) {
-      html += '<button class="sbtn' + (s === selectedSticker ? ' sel' : '') + '" data-sticker="' + s + '">' + s + '</button>';
+    h += '<div class="sec" style="margin-top:1.1rem">Send a sticker</div>';
+    h += '<div class="card"><div style="font-size:.8rem;color:var(--soft);margin-bottom:5px">Pick one:</div>';
+    h += '<div class="srow" id="srow">';
+    STICKERS.forEach(function(s){
+      h += '<button class="sbtn'+(s===selSticker?' on':'')+'\" data-s="'+s+'">'+s+'</button>';
     });
-    html += '</div>';
-    html += '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;">';
-    html += '<label style="font-size:0.82rem;color:var(--text-soft);">Send to:</label>';
-    html += '<select class="my-select" id="stickerTo">';
-    sorted.forEach(function(k) {
-      html += '<option value="' + k.name.replace(/"/g, '&quot;') + '">' + k.emoji + ' ' + k.name + '</option>';
-    });
-    html += '</select>';
-    html += '<button class="btn btn-yellow btn-sm" id="sendStickerBtn">Send ' + selectedSticker + '</button>';
-    html += '</div></div>';
+    h += '</div><div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:7px">';
+    h += '<label style="font-size:.8rem;color:var(--soft)">Send to:</label>';
+    h += '<select id="sto">';
+    sorted.forEach(function(k){ h += '<option value="'+k.name.replace(/"/g,'&quot;')+'">'+k.emoji+' '+k.name+'</option>'; });
+    h += '</select>';
+    h += '<button class="btn by sm" id="sendBtn">Send '+selSticker+'</button>';
+    h += '</div></div>';
   }
 
-  // Feed
   if (feedItems.length > 0) {
-    html += '<div class="section-title" style="margin-top:1.2rem">Activity</div>';
-    html += '<div class="card">';
-    feedItems.slice(0, 15).forEach(function(f) {
-      html += '<div class="feed-item"><span class="feed-emo">' + f.emo + '</span><span>' + f.html + '</span><span class="feed-time">' + timeAgo(f.ts) + '</span></div>';
+    h += '<div class="sec" style="margin-top:1.1rem">Activity</div><div class="card">';
+    feedItems.slice(0,12).forEach(function(f){
+      h += '<div class="fi"><span style="font-size:.95rem;flex-shrink:0">'+f.emo+'</span><span>'+f.html+'</span><span class="ft">'+ago(f.ts)+'</span></div>';
     });
-    html += '</div>';
+    h += '</div>';
   }
 
-  main.innerHTML = html;
-  attachEvents();
-}
+  el.innerHTML = h;
 
-function attachEvents() {
-  // emoji and join button are static - attached once below
-
-  document.querySelectorAll(".update-btn").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      var name = this.getAttribute("data-name");
-      var safe = name.replace(/[^a-zA-Z0-9]/g, "_");
-      var el = document.getElementById("pg_" + safe);
-      if (!el) return;
-      var p = parseInt(el.value);
-      if (isNaN(p) || p < 1 || p > TOTAL) { showToast("Page must be 1–" + TOTAL); return; }
-      var capturedName = name;
-      var capturedPage = p;
-      openPin("verify", function(pin) {
-        updatePage(capturedName, capturedPage, pin);
-      }, capturedName);
+  // Attach board events
+  el.querySelectorAll(".upd button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var name = this.getAttribute("data-kid");
+      var pg = parseInt(document.getElementById("pg_"+sid(name)).value);
+      if (isNaN(pg)||pg<1||pg>TOTAL){ toast("Page must be 1–"+TOTAL); return; }
+      var n=name, p=pg;
+      openPin("verify", function(pin){ updatePage(n,p,pin); }, name);
     });
   });
 
-  document.querySelectorAll(".sbtn").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      selectedSticker = this.getAttribute("data-sticker");
-      render();
+  el.querySelectorAll(".sbtn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      selSticker = this.getAttribute("data-s");
+      el.querySelectorAll(".sbtn").forEach(function(b){ b.classList.remove("on"); });
+      this.classList.add("on");
+      var sb = document.getElementById("sendBtn");
+      if (sb) sb.textContent = "Send "+selSticker;
     });
   });
 
-  var sendBtn = document.getElementById("sendStickerBtn");
+  var sendBtn = document.getElementById("sendBtn");
   if (sendBtn) {
-    sendBtn.addEventListener("click", function() {
-      var sel = document.getElementById("stickerTo");
-      if (sel) sendSticker(sel.value, selectedSticker);
+    sendBtn.addEventListener("click", function(){
+      var sel = document.getElementById("sto");
+      if (!sel) return;
+      var kidName = sel.value;
+      if (kidName) sendSticker(kidName, selSticker);
     });
   }
 }
 
-// ---- Static join form setup (done once, survives re-renders) ----
-function buildEmojiPicker() {
-  var row = document.getElementById("emojiRow");
-  if (!row) return;
-  row.innerHTML = "";
-  EMOJIS.forEach(function(e) {
-    var btn = document.createElement("button");
-    btn.className = "epbtn" + (e === selectedEmoji ? " sel" : "");
-    btn.textContent = e;
-    btn.addEventListener("click", function() {
-      selectedEmoji = e;
-      document.querySelectorAll(".epbtn").forEach(function(b){ b.classList.remove("sel"); });
-      btn.classList.add("sel");
+// ---- Static join form setup ----
+(function(){
+  // Build emoji picker
+  var erow = document.getElementById("erow");
+  EMOJIS.forEach(function(e){
+    var b = document.createElement("button");
+    b.className = "ebtn" + (e===selEmoji?" on":"");
+    b.textContent = e;
+    b.addEventListener("click", function(){
+      selEmoji = e;
+      erow.querySelectorAll(".ebtn").forEach(function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
     });
-    row.appendChild(btn);
+    erow.appendChild(b);
   });
-}
 
-function setupJoinBtn() {
-  var joinBtn = document.getElementById("joinBtn");
-  if (!joinBtn) return;
-  joinBtn.addEventListener("click", function() {
-    var nameEl = document.getElementById("joinName");
-    var name = nameEl ? nameEl.value.trim() : "";
-    if (!name) { showToast("Enter a name first!"); return; }
-    if (kids.find(function(k) { return k.name.toLowerCase() === name.toLowerCase(); })) {
-      showToast("That name is already in the club!"); return;
+  // Join button
+  document.getElementById("joinBtn").addEventListener("click", function(){
+    var name = document.getElementById("joinName").value.trim();
+    if (!name) { toast("Enter a name first!"); return; }
+    if (kids.find(function(k){ return k.name.toLowerCase()===name.toLowerCase(); })){
+      toast("That name is already in the club!"); return;
     }
-    var capturedName = name;
-    var capturedEmoji = selectedEmoji;
-    openPin("set", function(pin) {
-      joinKid(capturedName, capturedEmoji, pin);
-    }, capturedName);
+    // capture both values NOW before any async/render happens
+    var n = name;
+    var e = selEmoji;
+    openPin("set", function(pin){ joinKid(n, e, pin); }, n);
   });
-}
+})();
 
-// ---- Real-time listeners ----
-buildNumpad();
-buildEmojiPicker();
-setupJoinBtn();
+// ---- Firebase listeners ----
+db.collection("kids").onSnapshot(function(snap){
+  kids = snap.docs.map(function(d){ return d.data(); });
+  renderBoard();
+}, function(err){ toast("Connection error: "+err.message); });
 
-db.collection("kids").onSnapshot(function(snap) {
-  kids = snap.docs.map(function(d) { return d.data(); });
-  render();
-}, function(err) {
-  showError("Firebase error: " + err.message);
-});
-
-db.collection("feed").doc("main").onSnapshot(function(snap) {
-  if (snap.exists) feedItems = snap.data().items || [];
-  render();
-}, function(err) {
-  console.error("Feed error:", err);
+db.collection("feed").doc("main").onSnapshot(function(snap){
+  feedItems = snap.exists ? (snap.data().items||[]) : [];
+  renderBoard();
 });
 </script>
 </body>
