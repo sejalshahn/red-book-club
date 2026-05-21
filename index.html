@@ -91,8 +91,22 @@
   <p>Primary Phonics Workbook 1 · 46 pages</p>
 </div>
 
-<div class="main" id="main">
-  <div class="loading"><span class="spinner">📖</span>Loading the club…</div>
+<div class="main">
+  <div id="joinSection">
+    <div class="join-box">
+      <h2>Add your reader! 📚</h2>
+      <p>Pick an emoji, type your child's name, then create a 4-digit PIN</p>
+      <div class="emoji-row" id="emojiRow"></div>
+      <div class="field-row">
+        <input type="text" id="joinName" class="text-input" placeholder="Child's name" maxlength="20" />
+        <button class="btn btn-primary btn-sm" id="joinBtn">Join ✓</button>
+      </div>
+      <div class="pin-hint">You'll create a PIN on the next step</div>
+    </div>
+  </div>
+  <div id="main">
+    <div class="loading"><span class="spinner">📖</span>Loading the club…</div>
+  </div>
 </div>
 
 <div id="toast"></div>
@@ -343,22 +357,6 @@ function render() {
   var sorted = kids.filter(function(k){ return k.name; }).slice().sort(function(a, b) { return b.page - a.page; });
   var html = '<div style="font-size:0.72rem;color:#6B6B6B;margin-bottom:0.5rem">🔴 Live</div>';
 
-  // Join box
-  html += '<div class="join-box">';
-  html += '<h2>Add your reader! 📚</h2>';
-  html += '<p>Pick an emoji, type your child\'s name, then create a 4-digit PIN</p>';
-  html += '<div class="emoji-row">';
-  EMOJIS.forEach(function(e) {
-    html += '<button class="epbtn' + (e === selectedEmoji ? ' sel' : '') + '" data-emoji="' + e + '">' + e + '</button>';
-  });
-  html += '</div>';
-  html += '<div class="field-row">';
-  html += '<input type="text" id="joinName" class="text-input" placeholder="Child\'s name" maxlength="20" />';
-  html += '<button class="btn btn-primary btn-sm" id="joinBtn">Join ✓</button>';
-  html += '</div>';
-  html += '<div class="pin-hint">You\'ll create a PIN on the next step</div>';
-  html += '</div>';
-
   // Kid cards
   if (sorted.length > 0) {
     html += '<div class="section-title">The readers · ' + sorted.length + ' kid' + (sorted.length !== 1 ? 's' : '') + '</div>';
@@ -427,29 +425,7 @@ function render() {
 }
 
 function attachEvents() {
-  document.querySelectorAll(".epbtn").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      selectedEmoji = this.getAttribute("data-emoji");
-      render();
-    });
-  });
-
-  var joinBtn = document.getElementById("joinBtn");
-  if (joinBtn) {
-    joinBtn.addEventListener("click", function() {
-      var nameEl = document.getElementById("joinName");
-      var name = nameEl ? nameEl.value.trim() : "";
-      if (!name) { showToast("Enter a name first!"); return; }
-      if (kids.find(function(k) { return k.name.toLowerCase() === name.toLowerCase(); })) {
-        showToast("That name is already in the club!"); return;
-      }
-      var capturedName = name;
-      var capturedEmoji = selectedEmoji;
-      openPin("set", function(pin) {
-        joinKid(capturedName, capturedEmoji, pin);
-      }, capturedName);
-    });
-  }
+  // emoji and join button are static - attached once below
 
   document.querySelectorAll(".update-btn").forEach(function(btn) {
     btn.addEventListener("click", function() {
@@ -483,8 +459,46 @@ function attachEvents() {
   }
 }
 
+// ---- Static join form setup (done once, survives re-renders) ----
+function buildEmojiPicker() {
+  var row = document.getElementById("emojiRow");
+  if (!row) return;
+  row.innerHTML = "";
+  EMOJIS.forEach(function(e) {
+    var btn = document.createElement("button");
+    btn.className = "epbtn" + (e === selectedEmoji ? " sel" : "");
+    btn.textContent = e;
+    btn.addEventListener("click", function() {
+      selectedEmoji = e;
+      document.querySelectorAll(".epbtn").forEach(function(b){ b.classList.remove("sel"); });
+      btn.classList.add("sel");
+    });
+    row.appendChild(btn);
+  });
+}
+
+function setupJoinBtn() {
+  var joinBtn = document.getElementById("joinBtn");
+  if (!joinBtn) return;
+  joinBtn.addEventListener("click", function() {
+    var nameEl = document.getElementById("joinName");
+    var name = nameEl ? nameEl.value.trim() : "";
+    if (!name) { showToast("Enter a name first!"); return; }
+    if (kids.find(function(k) { return k.name.toLowerCase() === name.toLowerCase(); })) {
+      showToast("That name is already in the club!"); return;
+    }
+    var capturedName = name;
+    var capturedEmoji = selectedEmoji;
+    openPin("set", function(pin) {
+      joinKid(capturedName, capturedEmoji, pin);
+    }, capturedName);
+  });
+}
+
 // ---- Real-time listeners ----
 buildNumpad();
+buildEmojiPicker();
+setupJoinBtn();
 
 db.collection("kids").onSnapshot(function(snap) {
   kids = snap.docs.map(function(d) { return d.data(); });
