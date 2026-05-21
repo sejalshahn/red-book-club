@@ -278,20 +278,16 @@ function joinKid(name, emoji, pin) {
   var clean = name.trim().slice(0, 20);
   showToast("Adding " + clean + "...");
   var ref = db.collection("kids").doc(safeid(clean));
-  ref.get()
-    .then(function(snap) {
-      if (snap.exists) { showToast("That name is already in the club!"); return; }
-      var color = COLORS[kids.length % COLORS.length];
-      return ref.set({
-        name: clean,
-        emoji: emoji,
-        page: 0,
-        stickers: [],
-        color: color,
-        pin: pin,
-        joinedAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    })
+  var color = COLORS[kids.length % COLORS.length];
+  ref.set({
+    name: clean,
+    emoji: emoji,
+    page: 0,
+    stickers: [],
+    color: color,
+    pin: pin,
+    joinedAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
     .then(function() {
       return addFeedItem("🎉", "<strong>" + clean + "</strong> joined the Red Book Summer Club!");
     })
