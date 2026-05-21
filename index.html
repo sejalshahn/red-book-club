@@ -384,34 +384,39 @@ function renderBoard() {
 }
 
 // ---- Static join form setup ----
-(function(){
+// Use setTimeout 0 to ensure DOM is fully ready after scripts execute
+setTimeout(function(){
   // Build emoji picker
   var erow = document.getElementById("erow");
-  EMOJIS.forEach(function(e){
-    var b = document.createElement("button");
-    b.className = "ebtn" + (e===selEmoji?" on":"");
-    b.textContent = e;
-    b.addEventListener("click", function(){
-      selEmoji = e;
-      erow.querySelectorAll(".ebtn").forEach(function(x){ x.classList.remove("on"); });
-      b.classList.add("on");
+  if (erow) {
+    EMOJIS.forEach(function(e){
+      var b = document.createElement("button");
+      b.className = "ebtn" + (e===selEmoji?" on":"");
+      b.textContent = e;
+      b.addEventListener("click", function(){
+        selEmoji = e;
+        erow.querySelectorAll(".ebtn").forEach(function(x){ x.classList.remove("on"); });
+        b.classList.add("on");
+      });
+      erow.appendChild(b);
     });
-    erow.appendChild(b);
-  });
+  }
 
   // Join button
-  document.getElementById("joinBtn").addEventListener("click", function(){
-    var name = document.getElementById("joinName").value.trim();
-    if (!name) { toast("Enter a name first!"); return; }
-    if (kids.find(function(k){ return k.name.toLowerCase()===name.toLowerCase(); })){
-      toast("That name is already in the club!"); return;
-    }
-    // capture both values NOW before any async/render happens
-    var n = name;
-    var e = selEmoji;
-    openPin("set", function(pin){ joinKid(n, e, pin); }, n);
-  });
-})();
+  var jb = document.getElementById("joinBtn");
+  if (jb) {
+    jb.addEventListener("click", function(){
+      var name = document.getElementById("joinName").value.trim();
+      if (!name) { toast("Enter a name first!"); return; }
+      if (kids.find(function(k){ return k.name.toLowerCase()===name.toLowerCase(); })){
+        toast("That name is already in the club!"); return;
+      }
+      var n = name;
+      var e = selEmoji;
+      openPin("set", function(pin){ joinKid(n, e, pin); }, n);
+    });
+  }
+}, 0);
 
 // ---- Firebase listeners ----
 db.collection("kids").onSnapshot(function(snap){
