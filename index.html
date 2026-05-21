@@ -4,30 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>📖 Red Book Summer Club</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --yellow: #FFD93D;
-    --purple: #7B5EA7;
-    --purple-light: #EDE8F5;
-    --purple-mid: #C4B0E0;
-    --teal: #4ECDC4;
-    --coral: #FF6B6B;
-    --bg: #FFFBF0;
-    --card: #FFFFFF;
-    --text: #2D2D2D;
-    --text-soft: #6B6B6B;
-    --border: rgba(0,0,0,0.08);
-    --radius: 16px;
-    --radius-sm: 10px;
+    --yellow: #FFD93D; --purple: #7B5EA7; --purple-light: #EDE8F5; --purple-mid: #C4B0E0;
+    --coral: #FF6B6B; --bg: #FFFBF0; --card: #FFFFFF; --text: #2D2D2D; --text-soft: #6B6B6B;
+    --border: rgba(0,0,0,0.08); --radius: 16px; --radius-sm: 10px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Nunito Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+  body { font-family: 'Nunito Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
   h1, h2, h3 { font-family: 'Nunito', sans-serif; }
   .app-header { background: var(--purple); color: white; text-align: center; padding: 1.5rem 1rem 2.5rem; position: relative; overflow: hidden; }
   .app-header::after { content: ''; position: absolute; bottom: -20px; left: 0; right: 0; height: 40px; background: var(--bg); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
-  .app-header h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; }
+  .app-header h1 { font-size: 1.8rem; font-weight: 900; }
   .app-header p { font-size: 0.85rem; opacity: 0.75; margin-top: 4px; }
   .stars-deco { font-size: 1.2rem; letter-spacing: 6px; margin-bottom: 6px; opacity: 0.6; }
   .main { max-width: 600px; margin: 0 auto; padding: 1rem 1rem 4rem; }
@@ -40,14 +29,13 @@
   .kid-info { flex: 1; min-width: 0; }
   .kid-name-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
   .kid-name { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800; }
-  .finish-badge { display: inline-block; font-family: 'Nunito', sans-serif; font-size: 0.7rem; font-weight: 700; background: var(--yellow); color: #5a4000; border-radius: 99px; padding: 2px 8px; margin-left: 4px; }
+  .finish-badge { font-family: 'Nunito', sans-serif; font-size: 0.7rem; font-weight: 700; background: var(--yellow); color: #5a4000; border-radius: 99px; padding: 2px 8px; }
   .kid-page-text { font-size: 0.8rem; color: var(--text-soft); margin-top: 2px; }
-  .pbar-wrap { margin-top: 7px; }
-  .pbar-bg { height: 8px; background: rgba(0,0,0,0.07); border-radius: 99px; overflow: hidden; }
+  .pbar-bg { height: 8px; background: rgba(0,0,0,0.07); border-radius: 99px; overflow: hidden; margin-top: 7px; }
   .pbar-fill { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
   .pct-label { font-size: 0.72rem; color: var(--text-soft); margin-top: 3px; }
-  .stickers-received { font-size: 0.85rem; margin-top: 5px; letter-spacing: 1px; }
-  .rank-badge { position: absolute; top: 10px; right: 12px; font-size: 1.3rem; line-height: 1; }
+  .stickers-received { font-size: 0.85rem; margin-top: 5px; }
+  .rank-badge { position: absolute; top: 10px; right: 12px; font-size: 1.3rem; }
   .update-inline { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .update-inline label { font-size: 0.82rem; color: var(--text-soft); }
   .num-input { width: 64px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 10px; padding: 6px 8px; font-family: inherit; background: #fffbf0; color: #2d2d2d; outline: none; font-size: 0.9rem; }
@@ -55,30 +43,24 @@
   .join-box h2 { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
   .join-box p { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 1rem; }
   .emoji-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 1rem; }
-  .epbtn { font-size: 1.4rem; background: none; border: 2px solid transparent; border-radius: 10px; padding: 3px 5px; cursor: pointer; transition: transform 0.1s, border-color 0.1s; }
-  .epbtn:hover { transform: scale(1.15); }
+  .epbtn { font-size: 1.4rem; background: none; border: 2px solid transparent; border-radius: 10px; padding: 3px 5px; cursor: pointer; }
   .epbtn.sel { border-color: var(--purple); background: var(--purple-light); }
   .field-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; align-items: center; }
-  .text-input { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 0.9rem; font-family: 'Nunito Sans', sans-serif; outline: none; background: var(--bg); color: var(--text); transition: border-color 0.15s; width: 140px; }
-  .text-input:focus { border-color: var(--purple); }
+  .text-input { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 0.9rem; font-family: 'Nunito Sans', sans-serif; outline: none; background: var(--bg); color: var(--text); width: 140px; }
   .pin-hint { font-size: 0.75rem; color: var(--text-soft); margin-top: 6px; }
   .pin-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
   .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--purple-mid); background: transparent; transition: background 0.15s; }
   .pin-dot.filled { background: var(--purple); border-color: var(--purple); }
   .numpad { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; max-width: 200px; margin: 0 auto 10px; }
-  .numpad-btn { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 700; background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px; cursor: pointer; transition: background 0.1s, transform 0.1s; color: var(--text); }
-  .numpad-btn:active { transform: scale(0.94); background: var(--purple-light); }
-  .btn { font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; padding: 9px 18px; border-radius: 99px; border: none; cursor: pointer; transition: transform 0.1s, opacity 0.1s; white-space: nowrap; }
-  .btn:active { transform: scale(0.96); }
+  .numpad-btn { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 700; background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px; cursor: pointer; color: var(--text); }
+  .numpad-btn:active { background: var(--purple-light); }
+  .btn { font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; padding: 9px 18px; border-radius: 99px; border: none; cursor: pointer; white-space: nowrap; }
   .btn-primary { background: var(--purple); color: white; }
-  .btn-primary:hover { opacity: 0.9; }
   .btn-yellow { background: var(--yellow); color: #5a4000; }
   .btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--text-soft); }
-  .btn-ghost:hover { border-color: var(--purple-mid); color: var(--purple); }
   .btn-sm { font-size: 0.78rem; padding: 6px 13px; }
   .sticker-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
-  .sbtn { font-size: 1.3rem; background: var(--bg); border: 2px solid transparent; border-radius: 8px; padding: 3px 6px; cursor: pointer; transition: transform 0.1s, border-color 0.1s; }
-  .sbtn:hover { transform: scale(1.15); }
+  .sbtn { font-size: 1.3rem; background: var(--bg); border: 2px solid transparent; border-radius: 8px; padding: 3px 6px; cursor: pointer; }
   .sbtn.sel { border-color: var(--purple); background: var(--purple-light); }
   .feed-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; color: var(--text-soft); padding: 8px 0; border-bottom: 1px solid var(--border); }
   .feed-item:last-child { border-bottom: none; }
@@ -86,8 +68,6 @@
   .feed-item strong { color: var(--text); font-weight: 700; }
   .feed-time { margin-left: auto; flex-shrink: 0; font-size: 0.72rem; padding-left: 8px; }
   .my-select { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 7px 10px; font-family: 'Nunito Sans', sans-serif; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; }
-  .refresh-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
-  .last-updated { font-size: 0.72rem; color: var(--text-soft); }
   #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--purple); color: white; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem; padding: 8px 20px; border-radius: 99px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 999; white-space: nowrap; }
   #toast.show { opacity: 1; }
   .modal-bg { display: none; position: fixed; inset: 0; background: rgba(40,20,60,0.45); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
@@ -96,10 +76,11 @@
   .modal h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
   .modal p { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 1rem; }
   .error-msg { color: var(--coral); font-size: 0.8rem; margin-top: 6px; font-weight: 600; min-height: 1.2em; }
-  .loading { text-align: center; padding: 3rem 1rem; color: var(--text-soft); font-size: 0.9rem; }
+  .loading { text-align: center; padding: 3rem 1rem; color: var(--text-soft); }
   .spinner { font-size: 2rem; animation: spin 1s linear infinite; display: block; margin-bottom: 8px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .empty { text-align: center; padding: 2rem 1rem; color: var(--text-soft); }
+  .err-banner { background: #fee; border: 1px solid #fcc; color: #900; padding: 10px 14px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -120,7 +101,7 @@
   <div class="modal">
     <h2 id="pinTitle">Enter PIN</h2>
     <p id="pinSubtitle">Enter your 4-digit PIN</p>
-    <div class="pin-dots" id="pinDots">
+    <div class="pin-dots">
       <div class="pin-dot" id="d0"></div>
       <div class="pin-dot" id="d1"></div>
       <div class="pin-dot" id="d2"></div>
@@ -136,7 +117,8 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-const firebaseConfig = {
+// ---- Firebase init ----
+var firebaseConfig = {
   apiKey: "AIzaSyAzICXHNfqhqBanVi1sapzNS0reryXheF8",
   authDomain: "red-book-club.firebaseapp.com",
   projectId: "red-book-club",
@@ -145,29 +127,30 @@ const firebaseConfig = {
   appId: "1:966866422735:web:9fb764e2591378082ee0ba"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+var db = firebase.firestore();
 
-const TOTAL = 46;
-const EMOJIS = ["🦋","🦁","🌸","🚀","🌈","🐢","🦊","🐸","⚡","🌻","🦄","🐙","🦀","🐝","🌙","🎸","🍎","🦖"];
-const STICKERS = ["⭐","🎉","🔥","💪","🌟","❤️","👏","🎈","🍀","🐝"];
-const COLORS = ["#7B5EA7","#4ECDC4","#FF6B6B","#6BCB77","#FFD93D","#F7A072","#A8DADC","#E8A0BF","#90BE6D","#43AA8B","#577590","#F9844A","#4D908E","#277DA1","#F3722C","#F8961E","#F9C74F","#90BE6D"];
+// ---- Constants ----
+var TOTAL = 46;
+var EMOJIS = ["🦋","🦁","🌸","🚀","🌈","🐢","🦊","🐸","⚡","🌻","🦄","🐙","🦀","🐝","🌙","🎸","🍎","🦖"];
+var STICKERS = ["⭐","🎉","🔥","💪","🌟","❤️","👏","🎈","🍀","🐝"];
+var COLORS = ["#7B5EA7","#4ECDC4","#FF6B6B","#6BCB77","#FFD93D","#F7A072","#A8DADC","#E8A0BF","#90BE6D","#43AA8B","#577590","#F9844A","#4D908E","#277DA1","#F3722C","#F8961E","#F9C74F","#90BE6D"];
 
-let kids = [];
-let feedItems = [];
-let selectedEmoji = EMOJIS[0];
-let selectedSticker = STICKERS[0];
-let pinBuffer = "";
-let pinCallback = null;
-let pinMode = "verify";
-let pinStep = 1;
-let pinFirst = "";
-let kidCount = 0;
+// ---- State ----
+var kids = [];
+var feedItems = [];
+var selectedEmoji = EMOJIS[0];
+var selectedSticker = STICKERS[0];
+var pinBuffer = "";
+var pinCallback = null;
+var pinMode = "verify";
+var pinStep = 1;
+var pinFirst = "";
 
-// ---------- helpers ----------
+// ---- Helpers ----
 function timeAgo(ts) {
   if (!ts) return "";
-  const ms = (ts.toMillis ? ts.toMillis() : ts);
-  const s = Math.floor((Date.now() - ms) / 1000);
+  var ms = (typeof ts === "object" && ts.toMillis) ? ts.toMillis() : ts;
+  var s = Math.floor((Date.now() - ms) / 1000);
   if (s < 5) return "just now";
   if (s < 60) return s + "s ago";
   if (s < 3600) return Math.floor(s/60) + "m ago";
@@ -176,48 +159,71 @@ function timeAgo(ts) {
 }
 
 function showToast(msg) {
-  const t = document.getElementById("toast");
+  var t = document.getElementById("toast");
   t.textContent = msg;
   t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2500);
+  setTimeout(function(){ t.classList.remove("show"); }, 3000);
+}
+
+function showError(msg) {
+  var main = document.getElementById("main");
+  var banner = document.createElement("div");
+  banner.className = "err-banner";
+  banner.textContent = "⚠️ " + msg;
+  main.insertBefore(banner, main.firstChild);
+  setTimeout(function(){ if (banner.parentNode) banner.parentNode.removeChild(banner); }, 6000);
 }
 
 function popCard(name) {
-  const safe = name.replace(/[^a-zA-Z0-9]/g,"_");
-  const el = document.getElementById("kc_" + safe);
-  if (el) { el.classList.add("popped"); setTimeout(() => el.classList.remove("popped"), 500); }
+  var safe = name.replace(/[^a-zA-Z0-9]/g, "_");
+  var el = document.getElementById("kc_" + safe);
+  if (el) { el.classList.add("popped"); setTimeout(function(){ el.classList.remove("popped"); }, 500); }
 }
 
-function safeid(name) { return name.toLowerCase().replace(/[^a-z0-9]/g,"_"); }
+function safeid(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]/g, "_");
+}
 
-// ---------- PIN ----------
+// ---- PIN modal ----
 function buildNumpad() {
-  const np = document.getElementById("numpad");
+  var np = document.getElementById("numpad");
   np.innerHTML = "";
-  [1,2,3,4,5,6,7,8,9,"",0,"⌫"].forEach(function(v) {
-    const b = document.createElement("button");
+  var keys = [1,2,3,4,5,6,7,8,9,"",0,"⌫"];
+  keys.forEach(function(v) {
+    var b = document.createElement("button");
     b.className = "numpad-btn";
     b.textContent = v === "" ? "" : String(v);
     if (v === "") { b.disabled = true; b.style.visibility = "hidden"; }
-    b.addEventListener("click", function() {
-      if (v === "⌫") { pinBuffer = pinBuffer.slice(0,-1); }
-      else if (typeof v === "number" && pinBuffer.length < 4) { pinBuffer += String(v); }
-      updatePinDots();
-      if (pinBuffer.length === 4) setTimeout(submitPin, 180);
-    });
+    else {
+      b.addEventListener("click", function() {
+        if (v === "⌫") {
+          pinBuffer = pinBuffer.slice(0, -1);
+        } else if (typeof v === "number" && pinBuffer.length < 4) {
+          pinBuffer += String(v);
+        }
+        updatePinDots();
+        if (pinBuffer.length === 4) {
+          setTimeout(submitPin, 200);
+        }
+      });
+    }
     np.appendChild(b);
   });
   document.getElementById("cancelPinBtn").addEventListener("click", closePin);
 }
 
 function updatePinDots() {
-  for (let i = 0; i < 4; i++) {
-    document.getElementById("d"+i).classList.toggle("filled", i < pinBuffer.length);
+  for (var i = 0; i < 4; i++) {
+    document.getElementById("d" + i).classList.toggle("filled", i < pinBuffer.length);
   }
 }
 
 function openPin(mode, callback, kidName) {
-  pinMode = mode; pinCallback = callback; pinBuffer = ""; pinStep = 1; pinFirst = "";
+  pinMode = mode;
+  pinCallback = callback;
+  pinBuffer = "";
+  pinStep = 1;
+  pinFirst = "";
   document.getElementById("pinError").textContent = "";
   if (mode === "set") {
     document.getElementById("pinTitle").textContent = "Create a PIN for " + kidName;
@@ -232,17 +238,20 @@ function openPin(mode, callback, kidName) {
 
 function closePin() {
   document.getElementById("pinModal").classList.remove("open");
-  pinBuffer = ""; pinCallback = null;
+  pinBuffer = "";
+  pinCallback = null;
   updatePinDots();
 }
 
 function submitPin() {
   if (pinMode === "set") {
     if (pinStep === 1) {
-      pinFirst = pinBuffer; pinBuffer = "";
+      pinFirst = pinBuffer;
+      pinBuffer = "";
       document.getElementById("pinSubtitle").textContent = "Enter it again to confirm";
       document.getElementById("pinError").textContent = "";
-      updatePinDots(); pinStep = 2;
+      updatePinDots();
+      pinStep = 2;
     } else {
       if (pinBuffer === pinFirst) {
         var pin = pinBuffer;
@@ -250,7 +259,9 @@ function submitPin() {
         if (pinCallback) pinCallback(pin);
       } else {
         document.getElementById("pinError").textContent = "PINs didn't match — try again";
-        pinBuffer = ""; pinFirst = ""; pinStep = 1;
+        pinBuffer = "";
+        pinFirst = "";
+        pinStep = 1;
         document.getElementById("pinSubtitle").textContent = "Pick any 4 numbers";
         updatePinDots();
       }
@@ -262,61 +273,79 @@ function submitPin() {
   }
 }
 
-// ---------- Firestore actions ----------
+// ---- Firestore actions ----
 function joinKid(name, emoji, pin) {
-  var clean = name.trim().slice(0,20);
+  var clean = name.trim().slice(0, 20);
+  showToast("Adding " + clean + "...");
   var ref = db.collection("kids").doc(safeid(clean));
-  ref.get().then(function(snap) {
-    if (snap.exists) { showToast("That name is already in the club!"); return; }
-    var color = COLORS[kidCount % COLORS.length];
-    ref.set({ name: clean, emoji: emoji, page: 0, stickers: [], color: color, pin: pin, joinedAt: firebase.firestore.FieldValue.serverTimestamp() })
-      .then(function() {
-        addFeedItem("🎉", "<strong>" + clean + "</strong> joined the Red Book Summer Club!");
-        showToast("Welcome, " + clean + "! 🎉");
+  ref.get()
+    .then(function(snap) {
+      if (snap.exists) { showToast("That name is already in the club!"); return; }
+      var color = COLORS[kids.length % COLORS.length];
+      return ref.set({
+        name: clean,
+        emoji: emoji,
+        page: 0,
+        stickers: [],
+        color: color,
+        pin: pin,
+        joinedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-  });
+    })
+    .then(function() {
+      return addFeedItem("🎉", "<strong>" + clean + "</strong> joined the Red Book Summer Club!");
+    })
+    .then(function() {
+      showToast("Welcome, " + clean + "! 🎉");
+    })
+    .catch(function(err) {
+      showError("Could not add kid: " + err.message);
+    });
 }
 
 function updatePage(kidName, page, pin) {
   var ref = db.collection("kids").doc(safeid(kidName));
-  ref.get().then(function(snap) {
-    if (!snap.exists) return;
-    if (snap.data().pin !== pin) { showToast("Wrong PIN — try again ❌"); return; }
-    ref.update({ page: page }).then(function() {
-      addFeedItem("📖", "<strong>" + kidName + "</strong> is now on page " + page + " of " + TOTAL + "!");
-      if (page >= TOTAL) addFeedItem("🏆", "<strong>" + kidName + "</strong> FINISHED THE WHOLE BOOK! 🎊🎊🎊");
-      showToast("Page saved! 🌟");
-      popCard(kidName);
-    });
-  });
+  ref.get()
+    .then(function(snap) {
+      if (!snap.exists) { showError("Kid not found"); return; }
+      if (snap.data().pin !== pin) { showToast("Wrong PIN — try again ❌"); return; }
+      return ref.update({ page: page })
+        .then(function() {
+          addFeedItem("📖", "<strong>" + kidName + "</strong> is now on page " + page + " of " + TOTAL + "!");
+          if (page >= TOTAL) addFeedItem("🏆", "<strong>" + kidName + "</strong> FINISHED THE WHOLE BOOK! 🎊🎊🎊");
+          showToast("Page saved! 🌟");
+          popCard(kidName);
+        });
+    })
+    .catch(function(err) { showError("Could not update page: " + err.message); });
 }
 
 function sendSticker(toName, sticker) {
   var ref = db.collection("kids").doc(safeid(toName));
-  ref.update({ stickers: firebase.firestore.FieldValue.arrayUnion(sticker) }).then(function() {
-    addFeedItem(sticker, "Someone sent " + sticker + " to <strong>" + toName + "</strong>!");
-    showToast("Sticker sent! " + sticker);
-    popCard(toName);
-  });
+  ref.update({ stickers: firebase.firestore.FieldValue.arrayUnion(sticker) })
+    .then(function() {
+      addFeedItem(sticker, "Someone sent " + sticker + " to <strong>" + toName + "</strong>!");
+      showToast("Sticker sent! " + sticker);
+      popCard(toName);
+    })
+    .catch(function(err) { showError("Could not send sticker: " + err.message); });
 }
 
 function addFeedItem(emo, html) {
   var feedRef = db.collection("feed").doc("main");
-  feedRef.get().then(function(snap) {
+  return feedRef.get().then(function(snap) {
     var existing = snap.exists ? (snap.data().items || []) : [];
     var updated = [{ emo: emo, html: html, ts: Date.now() }].concat(existing).slice(0, 50);
-    feedRef.set({ items: updated });
+    return feedRef.set({ items: updated });
   });
 }
 
-// ---------- render ----------
+// ---- Render ----
 function render() {
   var main = document.getElementById("main");
   if (!main) return;
-  var sorted = kids.slice().sort(function(a,b){ return b.page - a.page; });
-  var html = "";
-
-  html += '<div class="refresh-bar"><span class="last-updated">🔴 Live</span></div>';
+  var sorted = kids.slice().sort(function(a, b) { return b.page - a.page; });
+  var html = '<div style="font-size:0.72rem;color:#6B6B6B;margin-bottom:0.5rem">🔴 Live</div>';
 
   // Join box
   html += '<div class="join-box">';
@@ -340,9 +369,9 @@ function render() {
     sorted.forEach(function(k, idx) {
       var pct = Math.round((k.page / TOTAL) * 100);
       var rank = k.page > 0 ? (idx===0?"🥇":idx===1?"🥈":idx===2?"🥉":"") : "";
-      var recentStickers = (k.stickers||[]).slice(-8).join(" ");
+      var recentStickers = (k.stickers || []).slice(-8).join(" ");
       var finished = k.page >= TOTAL;
-      var safe = k.name.replace(/[^a-zA-Z0-9]/g,"_");
+      var safe = k.name.replace(/[^a-zA-Z0-9]/g, "_");
       html += '<div class="card" id="kc_' + safe + '">';
       if (rank) html += '<div class="rank-badge">' + rank + '</div>';
       html += '<div class="kid-card">';
@@ -351,15 +380,15 @@ function render() {
       html += '<div class="kid-name-row"><span class="kid-name">' + k.name + '</span>';
       if (finished) html += '<span class="finish-badge">🏆 Finished!</span>';
       html += '</div>';
-      html += '<div class="kid-page-text">' + (k.page===0?"Not started yet":"Page " + k.page + " of " + TOTAL) + '</div>';
-      html += '<div class="pbar-wrap"><div class="pbar-bg"><div class="pbar-fill" style="width:' + pct + '%;background:' + k.color + '"></div></div>';
-      html += '<div class="pct-label">' + pct + '% done</div></div>';
+      html += '<div class="kid-page-text">' + (k.page === 0 ? "Not started yet" : "Page " + k.page + " of " + TOTAL) + '</div>';
+      html += '<div class="pbar-bg"><div class="pbar-fill" style="width:' + pct + '%;background:' + k.color + '"></div></div>';
+      html += '<div class="pct-label">' + pct + '% done</div>';
       if (recentStickers) html += '<div class="stickers-received">' + recentStickers + '</div>';
       html += '</div></div>';
       html += '<div class="update-inline">';
       html += '<label>Update page:</label>';
-      html += '<input type="number" class="num-input" id="pg_' + safe + '" min="1" max="' + TOTAL + '" value="' + (k.page||1) + '" />';
-      html += '<button class="btn btn-primary btn-sm update-btn" data-name="' + k.name.replace(/"/g,'&quot;') + '">Save 🔑</button>';
+      html += '<input type="number" class="num-input" id="pg_' + safe + '" min="1" max="' + TOTAL + '" value="' + (k.page || 1) + '" />';
+      html += '<button class="btn btn-primary btn-sm update-btn" data-name="' + k.name.replace(/"/g, '&quot;') + '">Save 🔑</button>';
       html += '</div></div>';
     });
   } else {
@@ -373,13 +402,15 @@ function render() {
     html += '<div style="font-size:0.82rem;color:var(--text-soft);margin-bottom:6px;">Pick one:</div>';
     html += '<div class="sticker-row">';
     STICKERS.forEach(function(s) {
-      html += '<button class="sbtn' + (s===selectedSticker?' sel':'') + '" data-sticker="' + s + '">' + s + '</button>';
+      html += '<button class="sbtn' + (s === selectedSticker ? ' sel' : '') + '" data-sticker="' + s + '">' + s + '</button>';
     });
     html += '</div>';
     html += '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;">';
     html += '<label style="font-size:0.82rem;color:var(--text-soft);">Send to:</label>';
     html += '<select class="my-select" id="stickerTo">';
-    sorted.forEach(function(k) { html += '<option value="' + k.name.replace(/"/g,'&quot;') + '">' + k.emoji + ' ' + k.name + '</option>'; });
+    sorted.forEach(function(k) {
+      html += '<option value="' + k.name.replace(/"/g, '&quot;') + '">' + k.emoji + ' ' + k.name + '</option>';
+    });
     html += '</select>';
     html += '<button class="btn btn-yellow btn-sm" id="sendStickerBtn">Send ' + selectedSticker + '</button>';
     html += '</div></div>';
@@ -389,8 +420,8 @@ function render() {
   if (feedItems.length > 0) {
     html += '<div class="section-title" style="margin-top:1.2rem">Activity</div>';
     html += '<div class="card">';
-    feedItems.slice(0,15).forEach(function(f) {
-      html += '<div class="feed-item"><span class="feed-emo">' + f.emo + '</span><span>' + f.html + '</span><span class="feed-time">' + timeAgo({toMillis:function(){return f.ts;}}) + '</span></div>';
+    feedItems.slice(0, 15).forEach(function(f) {
+      html += '<div class="feed-item"><span class="feed-emo">' + f.emo + '</span><span>' + f.html + '</span><span class="feed-time">' + timeAgo(f.ts) + '</span></div>';
     });
     html += '</div>';
   }
@@ -400,7 +431,6 @@ function render() {
 }
 
 function attachEvents() {
-  // emoji picker
   document.querySelectorAll(".epbtn").forEach(function(btn) {
     btn.addEventListener("click", function() {
       selectedEmoji = this.getAttribute("data-emoji");
@@ -408,34 +438,39 @@ function attachEvents() {
     });
   });
 
-  // join button
   var joinBtn = document.getElementById("joinBtn");
   if (joinBtn) {
     joinBtn.addEventListener("click", function() {
       var nameEl = document.getElementById("joinName");
       var name = nameEl ? nameEl.value.trim() : "";
       if (!name) { showToast("Enter a name first!"); return; }
-      if (kids.find(function(k){ return k.name.toLowerCase()===name.toLowerCase(); })) {
+      if (kids.find(function(k) { return k.name.toLowerCase() === name.toLowerCase(); })) {
         showToast("That name is already in the club!"); return;
       }
-      openPin("set", function(pin) { joinKid(name, selectedEmoji, pin); }, name);
+      var capturedName = name;
+      var capturedEmoji = selectedEmoji;
+      openPin("set", function(pin) {
+        joinKid(capturedName, capturedEmoji, pin);
+      }, capturedName);
     });
   }
 
-  // update page buttons
   document.querySelectorAll(".update-btn").forEach(function(btn) {
     btn.addEventListener("click", function() {
       var name = this.getAttribute("data-name");
-      var safe = name.replace(/[^a-zA-Z0-9]/g,"_");
+      var safe = name.replace(/[^a-zA-Z0-9]/g, "_");
       var el = document.getElementById("pg_" + safe);
       if (!el) return;
       var p = parseInt(el.value);
       if (isNaN(p) || p < 1 || p > TOTAL) { showToast("Page must be 1–" + TOTAL); return; }
-      openPin("verify", function(pin) { updatePage(name, p, pin); }, name);
+      var capturedName = name;
+      var capturedPage = p;
+      openPin("verify", function(pin) {
+        updatePage(capturedName, capturedPage, pin);
+      }, capturedName);
     });
   });
 
-  // sticker buttons
   document.querySelectorAll(".sbtn").forEach(function(btn) {
     btn.addEventListener("click", function() {
       selectedSticker = this.getAttribute("data-sticker");
@@ -443,7 +478,6 @@ function attachEvents() {
     });
   });
 
-  // send sticker button
   var sendBtn = document.getElementById("sendStickerBtn");
   if (sendBtn) {
     sendBtn.addEventListener("click", function() {
@@ -453,18 +487,21 @@ function attachEvents() {
   }
 }
 
-// ---------- real-time listeners ----------
+// ---- Real-time listeners ----
 buildNumpad();
 
 db.collection("kids").onSnapshot(function(snap) {
-  kids = snap.docs.map(function(d){ return d.data(); });
-  kidCount = kids.length;
+  kids = snap.docs.map(function(d) { return d.data(); });
   render();
+}, function(err) {
+  showError("Firebase error: " + err.message);
 });
 
 db.collection("feed").doc("main").onSnapshot(function(snap) {
   if (snap.exists) feedItems = snap.data().items || [];
   render();
+}, function(err) {
+  console.error("Feed error:", err);
 });
 </script>
 </body>
