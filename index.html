@@ -344,7 +344,7 @@ function addFeedItem(emo, html) {
 function render() {
   var main = document.getElementById("main");
   if (!main) return;
-  var sorted = kids.slice().sort(function(a, b) { return b.page - a.page; });
+  var sorted = kids.filter(function(k){ return k.name; }).slice().sort(function(a, b) { return b.page - a.page; });
   var html = '<div style="font-size:0.72rem;color:#6B6B6B;margin-bottom:0.5rem">🔴 Live</div>';
 
   // Join box
