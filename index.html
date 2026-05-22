@@ -126,8 +126,9 @@ var selSticker=STICKERS[0];
 var pinBuf="";
 var pinCb=null;
 var pinMode="verify";
-var pinStep=1;
-var pinFirst="";
+// pinStep and pinFirst are managed inside closure to prevent Firestore re-renders resetting them
+var _pinStep=1;
+var _pinFirst="";
 
 function toast(msg){
   var t=document.getElementById("toast");
@@ -151,7 +152,7 @@ function pdots(){
 }
 
 function openPin(mode,cb,name){
-  pinMode=mode;pinCb=cb;pinBuf="";pinStep=1;pinFirst="";
+  pinMode=mode;pinCb=cb;pinBuf="";_pinStep=1;_pinFirst="";
   document.getElementById("perr").textContent="";
   document.getElementById("ptitle").textContent=mode==="set"?"Create a PIN for "+name:name+"'s PIN";
   document.getElementById("psub").textContent=mode==="set"?"Pick any 4 numbers":"Enter the 4-digit PIN";
@@ -173,23 +174,23 @@ function pinKey(v){
 
 function pinSubmit(){
   if(pinMode==="set"){
-    if(pinStep===1){
-      pinFirst=pinBuf;pinBuf="";pinStep=2;
+    if(_pinStep===1){
+      _pinFirst=pinBuf;pinBuf="";_pinStep=2;
       document.getElementById("psub").textContent="Enter it again to confirm";
       document.getElementById("perr").textContent="";
       pdots();
     } else {
-      if(pinBuf===pinFirst){
-        var p=pinBuf;closePin();if(pinCb)pinCb(p);
+      if(pinBuf===_pinFirst){
+        var p=pinBuf;var cb=pinCb;closePin();_pinStep=1;_pinFirst="";if(cb)cb(p);
       } else {
         document.getElementById("perr").textContent="Didn't match — try again";
-        pinBuf="";pinFirst="";pinStep=1;
+        pinBuf="";_pinFirst="";_pinStep=1;
         document.getElementById("psub").textContent="Pick any 4 numbers";
         pdots();
       }
     }
   } else {
-    var p=pinBuf;closePin();if(pinCb)pinCb(p);
+    var p=pinBuf;var cb=pinCb;closePin();if(cb)cb(p);
   }
 }
 
@@ -367,18 +368,25 @@ function renderBoard(){
   });
 })();
 
-// Join button — runs immediately, joinBtn is already in DOM
-document.getElementById("joinBtn").addEventListener("click",function(){
-  var nameEl=document.getElementById("joinName");
-  var name=nameEl?nameEl.value.trim():"";
-  if(!name){toast("Enter a name first!");return;}
-  if(kids.find(function(k){return k.name.toLowerCase()===name.toLowerCase();})){
-    toast("That name is already in the club!");return;
-  }
-  var n=name;
-  var e=selEmoji;
-  openPin("set",function(pin){joinKid(n,e,pin);},n);
-});
+// Join button — clone first to ensure no duplicate listeners
+function setupJoinBtn(){
+  var old=document.getElementById("joinBtn");
+  var btn=old.cloneNode(true);
+  old.parentNode.replaceChild(btn,old);
+  btn.addEventListener("click",function(e){
+    e.preventDefault();
+    var nameEl=document.getElementById("joinName");
+    var name=nameEl?nameEl.value.trim():"";
+    if(!name){toast("Enter a name first!");return;}
+    if(kids.find(function(k){return k.name.toLowerCase()===name.toLowerCase();})){
+      toast("That name is already in the club!");return;
+    }
+    var n=name;
+    var ev=selEmoji;
+    openPin("set",function(pin){joinKid(n,ev,pin);},n);
+  });
+}
+setupJoinBtn();
 
 // Firebase listeners
 db.collection("kids").onSnapshot(function(snap){
