@@ -85,7 +85,7 @@ select{border:1.5px solid var(--bdr);border-radius:var(--rs);padding:6px 9px;fon
 
 <div class="wrap">
   <div class="jbox">
-    <h2>Add your reader! 📚</h2>
+    <h2>Add your superstar! ⭐</h2>
     <p>Pick an emoji, type your child's name, then create a 4-digit PIN</p>
     <div class="erow" id="erow"></div>
     <div class="frow">
@@ -260,7 +260,7 @@ function renderBoard(){
   var h='<div style="font-size:.7rem;color:var(--soft);margin-bottom:.4rem">🔴 Live</div>';
 
   if(sorted.length>0){
-    h+='<div class="sec">The readers · '+sorted.length+' kid'+(sorted.length!==1?'s':'')+'</div>';
+    h+='<div class="sec">The superstars · '+sorted.length+' kid'+(sorted.length!==1?'s':'')+'</div>';
     sorted.forEach(function(k,i){
       var rank=k.page>0?(i===0?"🥇":i===1?"🥈":i===2?"🥉":""):"";
       var stks=(k.stickers||[]).slice(-8).join(" ");
