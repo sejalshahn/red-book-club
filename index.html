@@ -73,6 +73,9 @@ select{border:1.5px solid var(--bdr);border-radius:var(--rs);padding:6px 9px;fon
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-family:'Nunito',sans-serif;font-weight:700;font-size:.83rem;padding:7px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999;white-space:nowrap}
 #toast.on{opacity:1}
 .pb{height:7px;background:rgba(0,0,0,.07);border-radius:99px;overflow:hidden;margin-top:6px}.pf{height:100%;border-radius:99px;transition:width .5s}.pct{font-size:.7rem;color:var(--soft);margin-top:2px}
+.lv-row{display:flex;align-items:center;gap:6px;margin-top:5px}
+.lv-label{font-size:.7rem;color:var(--soft);white-space:nowrap;width:80px;flex-shrink:0}
+.lv-pct{font-size:.7rem;color:var(--soft);width:28px;text-align:right;flex-shrink:0}
 .empty{text-align:center;padding:1.8rem 1rem;color:var(--soft)}
 </style>
 </head>
@@ -117,7 +120,22 @@ select{border:1.5px solid var(--bdr);border-radius:var(--rs);padding:6px 9px;fon
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-var TOTAL=100;
+var TOTAL=500;
+var LEVELS=[
+  {min:0,max:100,name:"Seedling",emoji:"🌱"},
+  {min:100,max:200,name:"Bookworm",emoji:"📖"},
+  {min:200,max:300,name:"Lightning",emoji:"⚡"},
+  {min:300,max:400,name:"On Fire",emoji:"🔥"},
+  {min:400,max:500,name:"Legend",emoji:"👑"}
+];
+
+function getLevel(page){
+  for(var i=LEVELS.length-1;i>=0;i--){
+    if(page>=LEVELS[i].min)return{level:i+1,data:LEVELS[i]};
+  }
+  return{level:1,data:LEVELS[0]};
+}
+
 var EMOJIS=["🦋","🦁","🌸","🚀","🌈","🐢","🦊","🐸","⚡","🌻","🦄","🐙","🦀","🐝","🌙","🎸","🍎","🦖"];
 var STICKERS=["⭐","🎉","🔥","💪","🌟","❤️","👏","🎈","🍀","🐝"];
 var COLORS=["#7B5EA7","#4ECDC4","#FF6B6B","#6BCB77","#FFD93D","#F7A072","#A8DADC","#E8A0BF","#90BE6D","#43AA8B","#577590","#F9844A","#4D908E","#277DA1","#F3722C","#F8961E","#F9C74F","#3B6D11"];
@@ -226,8 +244,13 @@ function updatePage(name,page,pin){
     if(!snap.exists){toast("Kid not found");return;}
     if(snap.data().pin!==pin){toast("Wrong PIN ❌");return;}
     db.collection("kids").doc(sid(name)).update({page:page}).then(function(){
-      addFeed("📖","<strong>"+name+"</strong> is on page "+page+" of "+TOTAL+"!");
-      if(page>=TOTAL)addFeed("🏆","<strong>"+name+"</strong> FINISHED THE WHOLE BOOK! 🎊");
+      addFeed("📖","<strong>"+name+"</strong> is on page "+page+"!");
+      // Check for level completion
+      LEVELS.forEach(function(lv,li){
+        if(page===lv.max){
+          addFeed("🎊","🎉✨ <strong>"+name+"</strong> just completed Level "+(li+1)+" — "+lv.emoji+" "+lv.name+"! ✨🎉");
+        }
+      });
       toast("Saved! 🌟");
       var el=document.getElementById("k_"+sid(name));
       if(el){el.classList.add("pop");setTimeout(function(){el.classList.remove("pop");},500);}
@@ -235,11 +258,11 @@ function updatePage(name,page,pin){
   }).catch(function(e){toast("Error: "+e.message);});
 }
 
-function sendSticker(to,sticker){
+function sendSticker(from,to,sticker){
   db.collection("kids").doc(sid(to)).update({
     stickers:firebase.firestore.FieldValue.arrayUnion(sticker)
   }).then(function(){
-    addFeed(sticker,"Someone sent "+sticker+" to <strong>"+to+"</strong>!");
+    addFeed(sticker,"<strong>"+from+"</strong> sent "+sticker+" to <strong>"+to+"</strong>!");
     toast("Sent! "+sticker);
   }).catch(function(e){toast("Error: "+e.message);});
 }
@@ -273,9 +296,21 @@ function renderBoard(){
       if(done)h+='<span class="fbadge">🏆 Finished!</span>';
       h+='<div class="ksub">'+(k.page===0?"Not started yet":"Page "+k.page+" of "+TOTAL)+'</div>';
       if(stks)h+='<div class="stks">'+stks+'</div>';
-      var pct=Math.round(k.page/TOTAL*100);
-      h+='<div class="pb"><div class="pf" style="width:'+pct+'%;background:'+k.color+'"></div></div>';
-      h+='<div class="pct">'+pct+'% done</div>';
+      // Level bars
+      var lv=getLevel(k.page);
+      for(var li=0;li<lv.level;li++){
+        var lvData=LEVELS[li];
+        var lvMin=lvData.min;
+        var lvMax=lvData.max;
+        var lvFill=li<lv.level-1?100:Math.round(((k.page-lvMin)/(lvMax-lvMin))*100);
+        var lvDone=li<lv.level-1;
+        var lvColor=lvDone?'#6BCB77':k.color;
+        h+='<div class="lv-row">';
+        h+='<span class="lv-label">'+lvData.emoji+' '+lvData.name+'</span>';
+        h+='<div class="pb" style="flex:1"><div class="pf" style="width:'+lvFill+'%;background:'+lvColor+'"></div></div>';
+        h+='<span class="lv-pct">'+lvFill+'%</span>';
+        h+='</div>';
+      }
       h+='</div></div>';
       h+='<div class="upd"><label>Update page:</label>';
       h+='<input type="number" class="ni" id="pg_'+id+'" min="1" max="'+TOTAL+'" value="'+(k.page||1)+'" />';
@@ -288,7 +323,13 @@ function renderBoard(){
 
   if(sorted.length>0){
     h+='<div class="sec" style="margin-top:1.1rem">Send a sticker</div>';
-    h+='<div class="card"><div style="font-size:.8rem;color:var(--soft);margin-bottom:5px">Pick one:</div>';
+    h+='<div class="card">';
+    h+='<div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:10px">';
+    h+='<label style="font-size:.8rem;color:var(--soft)">I am:</label>';
+    h+='<select id="senderSel">';
+    sorted.forEach(function(k){h+='<option value="'+k.name.replace(/"/g,'&quot;')+'">'+k.emoji+' '+k.name+'</option>';});
+    h+='</select></div>';
+    h+='<div style="font-size:.8rem;color:var(--soft);margin-bottom:5px">Pick a sticker:</div>';
     h+='<div class="srow">';
     STICKERS.forEach(function(s){
       h+='<button class="sbtn'+(s===selSticker?' on':'')+'" data-s="'+s+'">'+s+'</button>';
@@ -337,7 +378,12 @@ function renderBoard(){
   if(sendBtn){
     sendBtn.addEventListener("click",function(){
       var sel=document.getElementById("sto");
-      if(sel&&sel.value)sendSticker(sel.value,selSticker);
+      var senderSel=document.getElementById("senderSel");
+      var from=senderSel?senderSel.value:"";
+      var to=sel?sel.value:"";
+      if(from&&to&&from!==to)sendSticker(from,to,selSticker);
+      else if(from===to)toast("You can't send a sticker to yourself!");
+      else toast("Pick who you are first!");
     });
   }
 }
